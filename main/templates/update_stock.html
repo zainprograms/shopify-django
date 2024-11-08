@@ -1,0 +1,27 @@
+{% extends "Base.html" %}
+
+{% block contheader %}
+Update stock
+{% endblock contheader %}
+
+{% block contcont %}
+Here u can update your stock for {{ product }} product. 
+{% endblock contcont %}
+
+{% block content %}
+<div class="container" style="color: white;">
+  <h1 style="font-size: 35px; padding-bottom: 20px; margin-top: 5px;"> Update stocks </h1>
+
+  <form method="POST" action="{% url "update_stock" stock.id %}">
+    {% csrf_token %}
+    
+    <label  class="form-label">Quantity</label>
+    {{ form.quantity }}
+
+    <label style="padding-top: 15px; " class="form-label">Description</label>
+    {{ form.description }}
+
+    <input type="submit" class="btn btn-secondary" style="margin-top: 20px ;">
+  </form>
+</div>
+{% endblock content %}

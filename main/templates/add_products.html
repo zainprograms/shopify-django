@@ -1,0 +1,60 @@
+{% extends "Base.html" %}
+
+{% block link %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style3.css' %}">
+{% endblock link %}
+
+{% block contheader %}
+  Add Products
+{% endblock contheader %}
+
+{% block contcont %}
+<p>You can add new products for ({{ supplier }}) down below<p>
+{% endblock contcont %}
+
+{% block content %}
+{% load custom_filters %}
+<div class="container form_">
+  <h2 id='heading'>Add Product form</h2>
+  <form method="POST" action="{% url "add_products" supplier.id %}">
+
+    {% csrf_token %}
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Name</label>
+        {{ form.name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Size</label>
+        {{ form.size }}
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Brand</label>
+        {{ form.brand }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Price</label>
+        {{ form.price }}
+      </div>
+    </div>
+
+
+      <div class="">
+        <label  class="form-label">Category</label>
+        {{ form.category }}
+      </div>
+      <div style='margin-top: 10px; margin-bottom: 5px;'>
+        <label class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+
+
+  <input class='btn btn-secondary my-2' type='submit'>
+</form>
+</div>
+{% endblock %}

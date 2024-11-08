@@ -1,0 +1,9 @@
+* {
+  color: white;
+}
+
+#heading {
+  margin-top: 5px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}

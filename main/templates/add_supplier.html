@@ -1,0 +1,66 @@
+{% extends "Base.html" %}
+
+{% block link %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style3.css' %}">
+{% endblock link %}
+
+{% block contheader %}
+  Add Supplier
+{% endblock contheader %}
+
+{% block contcont %}
+<p>You can add new supplier down below<p>
+{% endblock contcont %}
+
+{% block content %}
+{% load custom_filters %}
+<div class="container form_">
+  <h2 id='heading'>Add supplier form</h2>
+  <form method="POST" action="{% url "add_supplier" %}">
+
+    {% csrf_token %}
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Name</label>
+        {{ form.name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        {{ form.email }}
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Contact info</label>
+        {{ form.contact_info }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">website</label>
+        {{ form.website }}
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Phone number</label>
+        {{ form.phone_number }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Company registration number</label>
+        {{ form.company_registration_number }}
+      </div>
+    </div>
+
+    <div>
+      <label class="form-label">Address</label>
+      {{ form.address }}
+    </div>
+  </br>
+
+  <input class='btn btn-secondary my-2' type='submit'>
+</form>
+</div>
+{% endblock %}

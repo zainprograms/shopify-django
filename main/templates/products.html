@@ -1,0 +1,114 @@
+{% extends "Base.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  {% block link %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style2.css' %}">
+  {% endblock link %}
+
+  {% block contheader %}
+    Products
+  {% endblock contheader %}
+
+  {% block contcont %}
+  <p>Shopfy gives you the best products customization and flexibility</p>
+  {% endblock contcont %}
+
+  {% block content %}
+  <div style='color: white;'>
+    <h2 id='product_header' style="justify-content: center; display: flex; padding-bottom: 10px;"><b>Products for : ({{ supplier }})</b></h2>
+    {% if products %}
+      {% for product in products %}
+        <div class="card" style="margin-bottom: 25px">
+          <div class="card-header" style="display: flex; justify-content: space-between;">
+            <h5 style='margin-top: 10px'><b>{{ product.name }}</b> :</h5>
+            <h5 style='margin-top: 5px'>
+              {% for stock in stocks %}
+              {% if stock.product == product %}
+                {% if stock.quantity == 0 %}
+                  <a class="btn btn-danger btn-sm" href="{% url "update_stock" stock.id %}">
+                    <b>Stock</b>: 0
+                  </a>
+                {% elif stock.quantity < 10 %}
+                  <a class="btn btn-secondary btn-sm" href="{% url "update_stock" stock.id %}">
+                    <b>Stock</b>: {{ stock.quantity }}
+                  </a>
+                {% elif stock.quantity >= 50 %}
+                  <a class="btn btn-success btn-sm" href="{% url "update_stock" stock.id %}">
+                    <b>Stock</b>: {{ stock.quantity }}
+                  </a>
+                {% else %}
+                <a class="btn btn-warning btn-sm" href="{% url "update_stock" stock.id %}">
+                  <b>Stock</b>: {{ stock.quantity }}
+                </a>
+                {% endif %}
+                
+                <!-- Modal structure with a unique ID for each stock -->
+              {% endif %}
+              {% endfor %}
+            </h5>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><b>Brand</b>: {{ product.brand }}</li>
+              <li><b>Price</b>: ${{ product.price }}</li>
+              <li><b>Size</b>: {{ product.size }}</li>
+              <li><b>Category</b>: {{ product.category }}</li>
+              <li style="border: solid rgb(8, 8, 8) 2px; padding: 5px; margin-top: 5px; border-radius: 5px; background-color: rgb(48, 48, 48);"><b>Description</b>: {{ product.description}}</li>
+            </ul>
+          </div>
+          <div class="card-footer text-body-secondary" style="margin-left: 15px; display: flex; justify-content: space-between;">
+            <span style='font-size: 14px; color: rgb(156, 156, 156);'>
+              {% if product.is_active %}
+                Active:
+                <input type="checkbox" id="checkbox-{{ product.id }}" checked disabled>
+                <label for="checkbox-{{ product.id }}"></label>
+              {% else %}
+                Inactive:
+                <input type="checkbox" id="checkbox-{{ product.id }}" disabled>
+                <label for="checkbox-{{ product.id }}"></label>
+              {% endif %}
+            </span>
+            <span style="display: flex; align-items: center; font-size: 14px; color: rgb(140, 140, 140);">
+              Date created: {{ product.date|date:"Y-m-d" }}
+              
+              <div class="dropdown" style="margin-left: 10px;">
+                <a class="btn btn-secondary btn-sm" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0; border: none; background: none;">
+                  <i class="fa-solid fa-bars" style="color: white; font-size: 20px;"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'update_product' product.id %}" style="padding-left: 10px; color: black;">
+                      Edit <i style="padding-left: 85px;" class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a href="{% url 'delete_product' product.id %}" style="padding-left: 10px; color: rgb(225, 10, 10); ">
+                      Delete <i style="padding-left: 65px;" class="fa-solid fa-trash-can"></i> 
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h1 style="display: flex; justify-content: center; align-items: center; height: 70vh; text-align: center; font-size: 60px; color: rgb(152, 152, 152);">NO PRODUCTS FOUND <i class="fa-solid fa-satellite-dish" style="padding-left: 10px;">
+      </i></h1>
+    {% endif %}
+  </div>
+
+
+  {% endblock content %}
+</body>
+</html>

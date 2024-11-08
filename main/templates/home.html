@@ -1,0 +1,103 @@
+{% extends "Base.html" %}
+
+{% block link %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock link %}
+
+{% block contheader %}
+  Supplier
+{% endblock contheader %}
+
+{% block contcont %}
+<p>At Shopify, we take pride in partnering with top-tier suppliers from around the world. Here are some of our suppliers:</p>
+{% endblock contcont %}
+
+{% block content %}
+{% load custom_filters %}
+
+
+{% for supplier in suppliers %}
+  {% if supplier %}
+    {% if supplier.user == request.user %}
+      <div class="card">
+        <h5 class="card-header" style="display: flex; justify-content: space-between;">
+          <span>Supplier: {{ supplier.name }}</span>
+          <span style="font-size: 1rem;">(Products own: <a href='#'>{{ supplier.product_count }}</a>)</span>
+        </h5>
+
+        <div class="card-body">
+          <h5>Products:</h5>
+          {% with supplier_products=products|filter_supplier:supplier.id %}
+            {% for product in supplier_products|slice:":3" %}
+            <ul>
+              <li>
+                <p class="d-inline-flex gap-1" style="display: flex; justify-content: space-between;">
+                  <a class="btn btn-dark" data-bs-toggle="collapse" href="#collapse{{ product.id }}" role="button" aria-expanded="false" aria-controls="collapse{{ product.id }}">
+                    {{ product.name }} <i class="fa-solid fa-angle-down"></i>
+                  </a>
+                </p> - 
+
+                <i class="fa-solid fa-cubes"></i> {{ product|get_stock_quantity:stocks }}
+
+                <div class="collapse" id="collapse{{ product.id }}">
+                  <div class="card card-body custom-card-body">
+                    <ul>
+                      <li><b>Size</b>: {{ product.size }}</li>
+                      <li><b>Brand</b>: {{ product.brand }}</li>
+                      <li><b>Price</b>: ${{ product.price }}</li>
+                      <li><b>Stock</b>: {{ product|get_stock_quantity:stocks }}</li>
+                      <li><b>Description</b>: {{ product.description }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            {% endfor %}
+          {% endwith %}
+      
+          {% if supplier.product_count > 3 %}
+            <a href="{% url "view_products" supplier.id %}">View {{supplier.product_count|subtract:3}} more products</a>
+          {% endif %}
+
+        </div>
+
+        <div class="card-footer text-body-secondary">
+          <div style="margin-left: 15px; display: flex; justify-content: space-between;">
+            <span style='font-size: 14px; color: rgb(156, 156, 156);'>
+              Contact info: {{supplier.contact_info}}
+            </span>
+            <div style="display: flex; align-items: center;">
+              <span style='font-size: 14px; color: rgb(156, 156, 156);'>
+                Date created: {{supplier.date_created|date:"Y-m-d"}} 
+                
+              </span>
+              <div class="dropdown" style="margin-left: 10px;">
+                <a class="btn btn-secondary btn-sm" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0; border: none; background: none;">
+                  <i class="fa-solid fa-bars" style="color: white; font-size: 20px;"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'add_products' supplier.id %}" style="padding-left: 10px; color: black;">Add products</a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a href="{% url "delete_supplier" supplier.id %}" style="padding-left: 10px; color: rgb(225, 10, 10);">Delete supplier</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+
+      </div>
+      <br>
+    {% endif %}
+  
+  {% else %}
+  <h1 style="display: flex; justify-content: center; align-items: center; height: 70vh; text-align: center; font-size: 60px; color: rgb(152, 152, 152);">NO SUPPLIERS FOUND <i class="fa-solid fa-satellite-dish" style="padding-left: 10px;"></i></h1>
+  {% endif %}
+{% endfor %}
+{% endblock content %}

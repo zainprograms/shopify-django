@@ -1,0 +1,24 @@
+.card {
+  background-color: rgb(64, 64, 64);
+  color: #ECECEC;
+}
+
+.card-header {
+  background-color: rgb(53, 53, 53);
+}
+
+.card-body {
+  border-width: 2;
+}
+
+#mini_card {
+  border: 2px solid black; /* Set the border color, style, and width */
+  border-radius: 5px; /* Set the radius to round the corners */
+  padding: 10px; /* Add some padding for better appearance */
+}
+
+#product_header {
+  justify-content: center; 
+  display: flex;
+}
+

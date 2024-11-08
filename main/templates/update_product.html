@@ -1,0 +1,53 @@
+{% extends "Base.html" %}
+
+{% block contheader %}Edit product{% endblock contheader %}
+
+{% block contcont %}Here, You can edit your product for ({{ supplier }}) {% endblock contcont %}
+
+{% block content %}
+
+<div class="container" style="color: white;">
+  <h1 style="font-size: 35px; padding-bottom: 20px; margin-top: 5px;"> Edit Product </h1>
+
+  <form method="POST" action="{% url "update_product" product.id %}">
+
+    {% csrf_token %}
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Name</label>
+        {{ form.name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Size</label>
+        {{ form.size }}
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label  class="form-label">Brand</label>
+        {{ form.brand }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Price</label>
+        {{ form.price }}
+      </div>
+    </div>
+
+
+      <div class="">
+        <label  class="form-label">Category</label>
+        {{ form.category }}
+      </div>
+      <div style='margin-top: 10px; margin-bottom: 5px;'>
+        <label class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+
+
+    <input class='btn btn-secondary my-2'  type='submit'>
+  </form>
+
+{% endblock content %}
+
